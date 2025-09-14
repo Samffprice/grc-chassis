@@ -26,7 +26,7 @@ export default function ProductBuildAnimation({ className = '' }: ProductBuildAn
           const img = new Image()
           img.onload = () => resolve(img)
           img.onerror = reject
-          img.src = `/WireAnimation/${frameNumber}.webp`
+          img.src = `/FullRender/${frameNumber}.webp`
         })
         imagePromises.push(promise)
       }
@@ -54,7 +54,7 @@ export default function ProductBuildAnimation({ className = '' }: ProductBuildAn
         loadedCount++
         setLoadingProgress(Math.round((loadedCount / totalFrames) * 100))
       }
-      img.src = `/WireAnimation/${frameNumber}.webp`
+      img.src = `/FullRender/${frameNumber}.webp`
     }
   }, [])
 
