@@ -25,11 +25,13 @@ export default function ConversionSection() {
         const { url } = await response.json()
         window.location.href = url
       } else {
-        throw new Error('Failed to create checkout session')
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))
+        console.error('Checkout API error:', errorData)
+        throw new Error(errorData.error || 'Failed to create checkout session')
       }
     } catch (error) {
       console.error('Checkout error:', error)
-      alert('There was an error processing your request. Please try again.')
+      alert(`There was an error processing your request: ${error instanceof Error ? error.message : 'Unknown error'}. Please try again.`)
     } finally {
       setIsProcessing(false)
       setIsLoading(false)
