@@ -1,7 +1,7 @@
 'use client'
 
 import { useApp } from '@/context/AppContext'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const ANODIZE_GRADIENT = 'linear-gradient(90deg, #6E4AAE 0%, #946BD9 10%, #C38EE8 18%, #E5A0E0 24%, #FFB3C7 30%, #FFD08A 40%, #FDCB6E 45%, #F6AA6E 50%, #A7C4FF 60%, #6EA0FF 70%, #3C75FF 80%, #355ECC 88%, #2A4D9F 100%)'
 

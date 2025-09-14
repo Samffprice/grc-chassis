@@ -1,27 +1,14 @@
 'use client'
 
 import { useApp } from '@/context/AppContext'
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import SimpleFinishSelector from './SimpleFinishSelector'
 import CurrentColorDisplay from './CurrentColorDisplay'
 
-interface FinishOption {
-  id: string
-  name: string
-  gradient: string
-}
-
-const finishOptions: FinishOption[] = [
-  { id: 'titanium-purple', name: 'Titanium Purple', gradient: 'linear-gradient(135deg, rgba(129,108,174,0.95) 0%, rgba(62,55,80,0.95) 100%)' },
-  { id: 'raw-machined', name: 'Raw Machined', gradient: 'linear-gradient(135deg, rgba(217,217,215,0.95) 0%, rgba(142,142,139,0.95) 100%)' },
-  { id: 'space-black', name: 'Space Black', gradient: 'linear-gradient(135deg, rgba(42,42,42,0.95) 0%, rgba(13,13,13,0.95) 100%)' },
-]
 
 export default function ConversionSection() {
-  const { selectedFinish, inventoryCount, isLoading, setIsLoading, anodizeLevel } = useApp()
+  const { selectedFinish, inventoryCount, setIsLoading, anodizeLevel } = useApp()
   const [isProcessing, setIsProcessing] = useState(false)
-
-  const selectedOption = useMemo(() => finishOptions.find(f => f.id === selectedFinish) || finishOptions[0], [selectedFinish])
 
   const handlePreOrder = async () => {
     setIsProcessing(true)

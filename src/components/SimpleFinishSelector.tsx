@@ -1,7 +1,7 @@
 "use client"
 
 import { useApp } from '@/context/AppContext'
-import { levelToVoltage, generateAnodizeGradient } from '@/utils/anodize'
+import { levelToVoltage } from '@/utils/anodize'
 import { useMemo, useRef, useState, useEffect } from 'react'
 
 type Mode = 'regular' | 'anodized'
@@ -39,8 +39,17 @@ export default function SimpleFinishSelector() {
 
   // Global mouse handlers for smooth dragging
   useEffect(() => {
+    const setFromClientXInEffect = (clientX: number) => {
+      if (!railRef.current) return
+      const rect = railRef.current.getBoundingClientRect()
+      const t = clamp01((clientX - rect.left) / rect.width)
+      setAnodizeLevel(t)
+      const near = SNAP_POINTS.reduce((a, b) => Math.abs(b - t) < Math.abs((a ?? b) - t) ? b : (a ?? b), undefined as number | undefined)
+      if (near !== undefined && Math.abs(near - t) < 0.03) setSnapHint(near); else setSnapHint(null)
+    }
+
     const onGlobalMove = (e: MouseEvent) => {
-      if (draggingRef.current) setFromClientX(e.clientX)
+      if (draggingRef.current) setFromClientXInEffect(e.clientX)
     }
     const onGlobalUp = () => {
       if (draggingRef.current) {
@@ -103,8 +112,8 @@ export default function SimpleFinishSelector() {
             aria-label="Anodize voltage"
             tabIndex={0}
             onKeyDown={(e) => {
-              if (e.key === 'ArrowLeft') setAnodizeLevel(v => clamp01(v - 1/110))
-              if (e.key === 'ArrowRight') setAnodizeLevel(v => clamp01(v + 1/110))
+              if (e.key === 'ArrowLeft') setAnodizeLevel(clamp01(anodizeLevel - 1/110))
+              if (e.key === 'ArrowRight') setAnodizeLevel(clamp01(anodizeLevel + 1/110))
             }}
           >
             <div className="spectrum-knob" style={{ left: `calc(${Math.round(anodizeLevel * 100)}% - 10px)` }} />

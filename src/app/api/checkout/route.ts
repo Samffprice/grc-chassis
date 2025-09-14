@@ -4,7 +4,7 @@ import { voltageToHexLabel } from '@/utils/anodize'
 
 // Initialize Stripe - in a real app, this would use environment variables
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_your_secret_key_here', {
-  apiVersion: '2024-12-18.acacia',
+  apiVersion: '2025-08-27.basil',
 })
 
 export async function POST(request: NextRequest) {

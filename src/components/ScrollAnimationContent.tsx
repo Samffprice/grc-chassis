@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 
 interface ScrollAnimationContentProps {
   images: HTMLImageElement[]
-  canvasRef: React.RefObject<HTMLCanvasElement>
+  canvasRef: React.RefObject<HTMLCanvasElement | null>
 }
 
 export default function ScrollAnimationContent({ images, canvasRef }: ScrollAnimationContentProps) {
@@ -48,6 +48,34 @@ export default function ScrollAnimationContent({ images, canvasRef }: ScrollAnim
       progress: [0.88, 0.98]
     }
   ]
+
+  // Create motion values for each text block at component level
+  const textBlock0Opacity = useTransform(scrollYProgress, [0.06, 0.14, 0.14, 0.22], [0, 1, 1, 0])
+  const textBlock0Y = useTransform(scrollYProgress, [0.06, 0.14, 0.14, 0.22], [60, 0, 0, -60])
+  
+  const textBlock1Opacity = useTransform(scrollYProgress, [0.26, 0.34, 0.38, 0.46], [0, 1, 1, 0])
+  const textBlock1Y = useTransform(scrollYProgress, [0.26, 0.34, 0.38, 0.46], [60, 0, 0, -60])
+  
+  const textBlock2Opacity = useTransform(scrollYProgress, [0.50, 0.58, 0.58, 0.66], [0, 1, 1, 0])
+  const textBlock2Y = useTransform(scrollYProgress, [0.50, 0.58, 0.58, 0.66], [60, 0, 0, -60])
+  
+  const textBlock3Opacity = useTransform(scrollYProgress, [0.70, 0.78, 0.78, 0.86], [0, 1, 1, 0])
+  const textBlock3Y = useTransform(scrollYProgress, [0.70, 0.78, 0.78, 0.86], [60, 0, 0, -60])
+  
+  const textBlock4Opacity = useTransform(scrollYProgress, [0.88, 0.96, 0.90, 0.98], [0, 1, 1, 0])
+  const textBlock4Y = useTransform(scrollYProgress, [0.88, 0.96, 0.90, 0.98], [60, 0, 0, -60])
+
+  const textBlockAnimations = [
+    { opacity: textBlock0Opacity, y: textBlock0Y },
+    { opacity: textBlock1Opacity, y: textBlock1Y },
+    { opacity: textBlock2Opacity, y: textBlock2Y },
+    { opacity: textBlock3Opacity, y: textBlock3Y },
+    { opacity: textBlock4Opacity, y: textBlock4Y },
+  ]
+
+  // Progress indicator animations
+  const progressOpacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0])
+  const progressHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
 
   // Draw current frame on canvas
   useEffect(() => {
@@ -154,16 +182,8 @@ export default function ScrollAnimationContent({ images, canvasRef }: ScrollAnim
               key={index}
               className="mb-16 last:mb-0"
               style={{
-                opacity: useTransform(
-                  scrollYProgress,
-                  [block.progress[0], block.progress[0] + 0.08, block.progress[1] - 0.08, block.progress[1]],
-                  [0, 1, 1, 0]
-                ),
-                y: useTransform(
-                  scrollYProgress,
-                  [block.progress[0], block.progress[0] + 0.08, block.progress[1] - 0.08, block.progress[1]],
-                  [60, 0, 0, -60]
-                )
+                opacity: textBlockAnimations[index].opacity,
+                y: textBlockAnimations[index].y
               }}
             >
               <h3 className="text-2xl lg:text-3xl font-bold text-white mb-4 tracking-tight">
@@ -184,7 +204,7 @@ export default function ScrollAnimationContent({ images, canvasRef }: ScrollAnim
       <motion.div
         className="fixed right-4 md:right-8 top-1/2 -translate-y-1/2 z-50"
         style={{
-          opacity: useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0])
+          opacity: progressOpacity
         }}
       >
         <div className="flex flex-col items-center gap-2">
@@ -192,7 +212,7 @@ export default function ScrollAnimationContent({ images, canvasRef }: ScrollAnim
             <motion.div
               className="absolute top-0 left-0 w-full bg-gradient-to-b from-purple-500 to-purple-400"
               style={{
-                height: useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
+                height: progressHeight
               }}
             />
           </div>

@@ -1,7 +1,7 @@
 'use client'
 
 import { useApp } from '@/context/AppContext'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 // Spectrum: purple → pink/yellow → blue
 const ANODIZE_GRADIENT = 'linear-gradient(90deg, #6E4AAE 0%, #946BD9 10%, #C38EE8 18%, #E5A0E0 24%, #FFB3C7 30%, #FFD08A 40%, #FDCB6E 45%, #F6AA6E 50%, #A7C4FF 60%, #6EA0FF 70%, #3C75FF 80%, #355ECC 88%, #2A4D9F 100%)'
@@ -22,24 +22,22 @@ export default function AnodizeBath() {
   const [snapLabel, setSnapLabel] = useState<string | null>(null)
   const [rippleKey, setRippleKey] = useState(0)
 
-  useEffect(() => setDisplayT(anodizeLevel), [])
+  useEffect(() => setDisplayT(anodizeLevel), [anodizeLevel])
 
   // Auto flow
   useEffect(() => {
     if (!auto) return
     let raf = 0
     const step = () => {
-      setAnodizeLevel(prev => {
-        const speed = 0.0012
-        let next = prev + speed
-        if (next > 0.98) next = 0.02
-        return next
-      })
+      const speed = 0.0012
+      let next = anodizeLevel + speed
+      if (next > 0.98) next = 0.02
+      setAnodizeLevel(next)
       raf = requestAnimationFrame(step)
     }
     raf = requestAnimationFrame(step)
     return () => cancelAnimationFrame(raf)
-  }, [auto, setAnodizeLevel])
+  }, [auto, anodizeLevel, setAnodizeLevel])
 
   // Inertial display
   useEffect(() => {
@@ -94,8 +92,8 @@ export default function AnodizeBath() {
           aria-valuenow={levelPct}
           tabIndex={0}
           onKeyDown={(e) => {
-            if (e.key === 'ArrowLeft') { setAuto(false); setAnodizeLevel(v => clamp01(v - 0.03)) }
-            if (e.key === 'ArrowRight') { setAuto(false); setAnodizeLevel(v => clamp01(v + 0.03)) }
+            if (e.key === 'ArrowLeft') { setAuto(false); setAnodizeLevel(clamp01(anodizeLevel - 0.03)) }
+            if (e.key === 'ArrowRight') { setAuto(false); setAnodizeLevel(clamp01(anodizeLevel + 0.03)) }
           }}
         >
           {/* Caustic shimmer */}
