@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
               : `Premium titanium chassis - ${label} (${voltage}V)`,
             images: ['https://via.placeholder.com/600x400/7F00FF/FFFFFF?text=Titanium+Chassis'],
           },
-          unit_amount: 29900, // $299.00 in cents
+          unit_amount: 60000, // $600.00 in cents
         },
         quantity: 1,
       }

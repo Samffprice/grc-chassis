@@ -85,7 +85,7 @@ export default function ConversionSection() {
             </div>
 
             <div className="text-center mt-8">
-              <div className="price-luxe text-[30px] font-extrabold mb-2">$299</div>
+              <div className="price-luxe text-[30px] font-extrabold mb-2">$600</div>
               <div className="price-note mb-5">Full Payment Required</div>
               <button
                 onClick={handlePreOrder}
